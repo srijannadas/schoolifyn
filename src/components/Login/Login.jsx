@@ -2,27 +2,36 @@ import React, { useState } from 'react'
 import Logo from '../../assets/images/logo-main.png'
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import toast, {Toaster} from 'react-hot-toast';
+import axios from 'axios';
+import { useAuth } from '../../Contexts/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [userData, setUserData] = useState({
     email: '',
     password: ''
   })
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleAuth = (e) => {
+  const handleAuth = async (e) => {
     e.preventDefault();
-    if(userData.email === "johndoe@schoolify.edu" && userData.password === "johndoe"){
-      toast('Welcome! ' + userData.email, {
-        icon: '👏',
-        style: {
-          borderRadius: '10px',
-          background: '#333',
-          color: '#fff',
-        },
-      });
-    }
-    else{
-      toast.error('Something Went Wrong!')
+    try {
+      const response = await axios.post('http://localhost:5000/login', userData);
+
+      // Store the token in localStorage or a state variable for future requests
+      const token = response.data.token;
+      console.log('Login successful. Token:', token);
+      toast.success('Login successful. Token:', token);
+      login({ fullName: response.data.fullName, token });
+      localStorage.setItem('fullName', response.data.fullName)
+      console.log('fullName', response.data)
+      localStorage.setItem('token', response.data.token);
+      navigate('/')
+    } catch (error) {
+      console.error('Error during login:', error);
+      toast.error('Error during login');
+
     }
   }
   return (
