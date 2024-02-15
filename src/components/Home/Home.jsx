@@ -1,10 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../Contexts/AuthContext';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 const Home = ({ location }) => {
   const { state } = useAuth();
   return (
     <div>
+      <Header/>
       <div className="container-fluid">
         <div className="row">
             <div className="col">
@@ -15,6 +18,7 @@ const Home = ({ location }) => {
             </div>
         </div>
       </div>
+      <Footer/>
     </div>
   )
 }
