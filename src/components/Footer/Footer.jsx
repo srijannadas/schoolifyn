@@ -1,39 +1,80 @@
 import React from 'react';
-import  './Footer.css';
-import footer from '../../assets/images/header-logo.png';
-
+import Wave from 'react-wavify';
+import './Footer.css';
 const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer-content">
-          <div className="footer-logo">
-            <img src={footer} alt="Your Company Logo" />
-            <p>Your Company Tagline</p>
+    <div>
+    <Wave fill='#0B5084'
+    paused={true}
+    style={{ display: 'flex' }}
+    options={{
+      height: 40,
+      amplitude: 300,
+      speed: 0.15,
+      points: 2
+    }}
+/>
+    <footer className=" bg-[#0B5084] py-12">
+       
+
+      <div className="container mx-auto">
+        <div className="row">
+          {/* About Us */}
+          <div className="col-md-3">
+            <h3 className="text-white text-lg font-semibold mb-4">About Us</h3>
+            <p className="text-gray-400">la eu justotur sagittis vitae ut velit.</p>
           </div>
-          <div className="footer-links">
-            <ul>
-              <li><a href="/about">About Us</a></li>
-              <li><a href="/services">Services</a></li>
-              <li><a href="/contact">Contact Us</a></li>
+          
+          {/* Quick Links */}
+          <div className="col-md-3">
+            <h3 className="text-white text-lg font-semibold mb-4">Quick Links</h3>
+            <ul className="text-gray-400">
+              <li><a href="#" className="hover:text-gray-200">Home</a></li>
+              <li><a href="#" className="hover:text-gray-200">About</a></li>
+              <li><a href="#" className="hover:text-gray-200">Services</a></li>
+              <li><a href="#" className="hover:text-gray-200">Contact</a></li>
             </ul>
           </div>
-          <div className="footer-social">
-            <ul>
-              <li><a href="https://twitter.com/yourcompany" target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter"></i></a></li>
-              <li><a href="https://facebook.com/yourcompany" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook-f"></i></a></li>
-              <li><a href="https://instagram.com/yourcompany" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a></li>
+
+           {/* Resources */}
+           <div className="col-md-3">
+            <h3 className="text-white text-lg font-semibold mb-4">Resources</h3>
+            <ul className="text-gray-400">
+              <li><a href="#" className="hover:text-gray-200">Resource 1</a></li>
+              <li><a href="#" className="hover:text-gray-200">Resource 2</a></li>
+              <li><a href="#" className="hover:text-gray-200">Resource 3</a></li>
+              <li><a href="#" className="hover:text-gray-200">Resource 4</a></li>
+            </ul>
+          </div>
+          
+          {/* Contact Us */}
+          <div className="col-md-3">
+            <h3 className="text-white text-lg font-semibold mb-4">Contact Us</h3>
+            <ul className="text-gray-400">
+              <li>Email: info@example.com</li>
+              <li>Phone: +1234567890</li>
+              <li>Address: 123 Street, City</li>
             </ul>
           </div>
         </div>
-        <div className="footer-info">
-          <p>&copy; {new Date().getFullYear()} Your Company Name. All rights reserved.</p>
-          <div className="footer-legal">
-            <a href="/terms">Terms of Service</a> | <a href="/privacy">Privacy Policy</a>
-          </div>
+        
+        {/* Social Media */}
+  
+        <div className="flex justify-center items-center mt-8">
+          <a href="#" className="text-gray-400 hover:text-white mx-4"><i className="fab fa-facebook-f"></i></a>
+          <a href="#" className="text-gray-400 hover:text-white mx-4"><i className="fab fa-twitter"></i></a>
+          <a href="#" className="text-gray-400 hover:text-white mx-4"><i className="fab fa-instagram"></i></a>
+          <a href="#" className="text-gray-400 hover:text-white mx-4"><i className="fab fa-linkedin"></i></a>
+        </div>
+        
+        {/* Copyright */}
+        <div className="text-center mt-12">
+          <p className="text-gray-400">© 2024 Your Company. All rights reserved.</p>
         </div>
       </div>
+      
     </footer>
+    </div>
   );
 }
 
