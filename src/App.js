@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/Login/Login';
 import Home from './components/Home/Home';
-import { AuthProvider } from './Contexts/AuthContext';
+import { AuthProvider } from './components/Context/AuthContext';
 // import useAuth from './hooks/userAuth';
 import HomeSecure from './components/Home/HomeSecure';
 import Register from './components/Register/Register';

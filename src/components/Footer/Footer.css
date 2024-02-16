@@ -4,11 +4,11 @@
     padding: 50px 0;
   }
   
-  .container {
+  /* .container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-  }
+  } */
   
   .footer-content {
     display: flex;

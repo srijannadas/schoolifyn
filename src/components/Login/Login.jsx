@@ -3,16 +3,17 @@ import Logo from '../../assets/images/logo-main.png'
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import toast, {Toaster} from 'react-hot-toast';
 import axios from 'axios';
-import { useAuth } from '../../Contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 
 const Login = () => {
   const [userData, setUserData] = useState({
     email: '',
     password: ''
   })
+  const { setAuthToken } = useAuth();
   const navigate = useNavigate();
-  const { login } = useAuth();
+
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -23,11 +24,8 @@ const Login = () => {
       const token = response.data.token;
       console.log('Login successful. Token:', token);
       toast.success('Login successful. Token:', token);
-      login({ fullName: response.data.fullName, token });
-      localStorage.setItem('fullName', response.data.fullName)
-      console.log('fullName', response.data)
-      localStorage.setItem('token', response.data.token);
-      navigate('/')
+      setAuthToken(token);
+      navigate('/') 
     } catch (error) {
       console.error('Error during login:', error);
       toast.error('Error during login');

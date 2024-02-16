@@ -41,7 +41,7 @@ module.exports = (User) => {
       }
 
       // Generate and send a JSON Web Token (JWT) upon successful login
-      const token = jwt.sign({ userId: user._id }, 'your-secret-key'); // Replace 'your-secret-key' with a secret key for signing the token
+      const token = jwt.sign({ userId: user._id, userName: user.fullName }, 'your-secret-key'); // Replace 'your-secret-key' with a secret key for signing the token
       res.status(200).json({ token });
     } catch (error) {
       console.error(error);
