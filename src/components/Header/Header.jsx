@@ -38,7 +38,7 @@ const Header = () => {
           {
             token ? (
               <>
-            <li className='profile'> <a className='d-flex' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}> <FiUser className='me-2' /> Hi, {user.userName} </a></li>
+            <li className='profile'> <a className='d-flex' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}> <FiUser className='me-2' /> Hi, {token ? user.userName : 'userName'} </a></li>
             {isDropdownVisible && (
               <div className="profile-dropdown" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <ul>

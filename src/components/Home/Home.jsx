@@ -1,21 +1,16 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../Context/AuthContext';
+// import { useAuth } from '../Context/AuthContext';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 // import { useAuth } from './AuthContext';
 import { jwtDecode } from 'jwt-decode';
 const Home = ({ location }) => {
-  const { token, handleLogout } = useAuth();
-
-  const user = token ? jwtDecode(token) : { 'userName': 'Guest' }
 
   // if (!token) {
   //   return <div>Please log in to access this page.</div>;
   // }
-  const handleLogoutClick = () => {
-    handleLogout();
-  }
+
   return (
     <div>
       <Header />

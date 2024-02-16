@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
   };
   const handleLogout = () => {
     setAuthToken(null);
+    Cookies.remove('token')
   };
   useEffect(() => {
     const storedToken = Cookies.get('token');
