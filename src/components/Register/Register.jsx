@@ -1,13 +1,12 @@
-import React,{useState, useRef} from 'react'
+import React,{useState} from 'react'
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import toast, {Toaster} from 'react-hot-toast';
 import Logo from '../../assets/images/logo-main.png'
 import axios from "axios";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
-
 
   const navigate = useNavigate();
     const [userData, setUserData] = useState({
@@ -16,45 +15,8 @@ const Register = () => {
         password: ''
       })
       const [userId, setUserId] = useState('');
-  const [enteredOTP, setEnteredOTP] = useState(Array(6).fill(''));
+  const [enteredOTP, setEnteredOTP] = useState('');
   const [verificationStatus, setVerificationStatus] = useState('');
-  const inputMaxLength = 1;
-
-  const handleOtpChange = (index, value) => {
-    const newOtpValues = [...enteredOTP];
-    newOtpValues[index] = value;
-
-    setEnteredOTP(newOtpValues);
-
-
-    // Move focus to the next input box
-    const nextIndex = index + 1;
-    const prevIndex = index - 1;
-    if (value.length === inputMaxLength) {
-      if (nextIndex < enteredOTP.length) {
-        document.getElementById(`otp-input-${nextIndex}`).focus();
-      }
-    }
-  };
-  const handleKeyDown = (index, e) => {
-    // Handle Backspace key
-    if (e.key === 'Backspace') {
-      const prevIndex = index - 1;
-      if (prevIndex >= 0) {
-        // Move focus to the previous input box
-        document.getElementById(`otp-input-${prevIndex}`).focus();
-      } else {
-        // Clear the last character if Backspace is pressed on the first input box
-        const newOtpValues = [...enteredOTP];
-        newOtpValues[index] = ''; // Clear the current index
-        setEnteredOTP(newOtpValues);
-  
-        // Move focus to the current input box (optional)
-        document.getElementById(`otp-input-${index}`).focus();
-      }
-    }
-  };
-  
 
   const handleRegister = async (e) => {
     e.preventDefault()
@@ -67,8 +29,6 @@ const Register = () => {
       console.error('Error during registration:', error.response.data);
     }
   };
-
- 
   
 
   const handleVerifyOTP = async () => {
@@ -108,33 +68,17 @@ reverseOrder={false}/>
               <div className="login-button d-flex justify-center mt-3"><button className="p-2 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg" onClick={handleRegister}>Register</button></div>
             </form>
 
-            {/* {userId && ( */}
-          
-      
+            {userId && (
         <div className=' mt-3 ms-4'>
 
           <label className='form-label text-white'>
             Enter OTP:
-            <div className='mt-2' style={{ display: 'flex', justifyContent: 'space-between', width: '200px' }}>
-      {enteredOTP.map((value, index) => (
-        <input
-          key={index}
-          id={`otp-input-${index}`}
-          type="number"
-          maxLength={inputMaxLength}
-          value={value}
-          className='form-control'
-          onChange={(e) => handleOtpChange(index, e.target.value)}
-          onKeyDown={(e) => handleKeyDown(index, e)}
-          style={{ borderRadius: '4px', width: '35px', height: '35px', marginLeft: '5px', textAlign: 'center', fontSize: '16px' }}
-        />
-      ))}
-    </div>
+            <input type="text" value={enteredOTP} onChange={(e) => setEnteredOTP(e.target.value)} className='form-control w-full'/>
           </label>
-          <button onClick={handleVerifyOTP} className=" ms-2 p-2 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg" style={{position: 'relative', left: '7%'}}>Verify OTP</button><br />
+          <button onClick={handleVerifyOTP} className=" ms-2 p-2 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg">Verify OTP</button><br />
           <p className='badge text-bg-danger '>{verificationStatus}</p>
         </div>
-      {/* )}  */}
+      )} 
           </div>
 
           <div className="d-flex justify-center mt-4">
@@ -147,9 +91,8 @@ reverseOrder={false}/>
           <div className="container">
           <div className="login-social-button d-flex justify-center mt-3">
             <button className='p-2 rounded bg-[#D9D9D9] me-2'><FaFacebook /></button>
-            <button className='p-2 rounded bg-[#D9D9D9]'><FaGoogle /></button> 
+            <button className='p-2 rounded bg-[#D9D9D9]'><FaGoogle /></button>
           </div>
-            <Link to={'/'}>  <p className='text-center mt-2 text-white underline'>Go to Home Page</p> </Link>
           </div>
         </div>
       </div>
