@@ -30,11 +30,26 @@ const Header = () => {
       <nav>
         <ul>
           <li><a href="#">Home</a></li>
-          <li><a href="#">Class</a></li>
-          <li><a href="#">MockTest</a></li>
-          <li><a href="#">Notes</a></li>
-          <li><a href="#">PYQ</a></li>
-          <li><a href="#">Test Potal</a></li>
+          {
+            token ? (
+              <>
+              <li><a href="#">Class</a></li>
+              <li><a href="#">MockTest</a></li>
+              <li><a href="#">Notes</a></li>
+              <li><a href="#">PYQ</a></li>
+              <li><a href="#">Test Potal</a></li>
+              <li><a href="#">Dashboard</a></li>
+              
+              </>
+            ) : (
+              <>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Contact Us</a></li>
+              </>
+              
+            )
+          }
+         
           {
             token ? (
               <>

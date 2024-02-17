@@ -6,6 +6,7 @@ import { AuthProvider } from './components/Context/AuthContext';
 // import useAuth from './hooks/userAuth';
 import HomeSecure from './components/Home/HomeSecure';
 import Register from './components/Register/Register';
+import VerificationPage from './components/Register/VerificationPage';
 
 function App() {
   // const isLogin = useAuth();
@@ -17,6 +18,7 @@ function App() {
           <Route path='/' element={<Home/>} />
           <Route path='/login' element={<Login/>}/>
           <Route path='/register' element={<Register/>}/>
+          <Route path='/verify/:token' element={<VerificationPage/>}/>
         </Routes>
       </BrowserRouter>
       </AuthProvider>
