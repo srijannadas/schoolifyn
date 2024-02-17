@@ -14,10 +14,19 @@ const Home = ({ location }) => {
   return (
     <div>
       <Header />
-      <div className="container-fluid">
+      <div className="container">
         <div className="row">
-          <div className="col">
-
+          <div className="col-md-6 d-flex justify-center items-center flex-column">
+            <h1 className='text-2xl font-bold text-[#47AE6A] drop-shadow'>One Place for 
+           <br/> all your Academics
+            <br/> Help!!
+            </h1>
+            
+            
+            <button className=' align-left p-2 bg-indigo-500 text-indigo-100 rounded mt-3'
+            style={{marginLeft: '-5.5rem '}}>Explore  Now</button>
+            
+           
             {/* <h2 className='text-2xl text-indigo-600'>Welcome, {token ? user.userName : 'Guest'}!</h2>
             <Link to={'/login'}> <button className='p-2 bg-indigo-500 text-indigo-100 rounded'>Login</button></Link>
             <Link to={'/register'}> <button className='p-2 bg-indigo-500 text-indigo-100 rounded'>Register</button></Link>
