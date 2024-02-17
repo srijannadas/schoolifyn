@@ -71,8 +71,9 @@ const Login = () => {
               <div className="login-social-button d-flex justify-center mt-3">
                 <button className='p-2 rounded bg-[#D9D9D9] me-2'><FaGithub /></button>
                 <button className='p-2 rounded bg-[#D9D9D9]'><FaGoogle /></button>
-                {/* <Link to={'/'}><a> Go to Home </a></Link> */}
               </div>
+            <Link to={'/'}>  <p className='text-center mt-2 text-white underline'>Go to Home Page</p> </Link>
+
             </div>
           </div>
         </div>
