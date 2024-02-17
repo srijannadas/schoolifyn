@@ -3,10 +3,12 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import toast, {Toaster} from 'react-hot-toast';
 import Logo from '../../assets/images/logo-main.png'
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
 
+  const navigate = useNavigate();
     const [userData, setUserData] = useState({
         fullName: '',
         email: '',
@@ -27,13 +29,16 @@ const Register = () => {
       console.error('Error during registration:', error.response.data);
     }
   };
+  
 
   const handleVerifyOTP = async () => {
     try {
       const response = await axios.post('http://localhost:5000/verifyOTP', { userId, enteredOTP });
       setVerificationStatus(response.data.message);
+      navigate('/login')
     } catch (error) {
       console.error('Error verifying OTP:', error.response.data);
+      setVerificationStatus(error.response.data)
     }
   };
   return (
@@ -64,15 +69,16 @@ reverseOrder={false}/>
             </form>
 
             {userId && (
-        <div>
-          <label>
-            Entered OTP:
-            <input type="text" value={enteredOTP} onChange={(e) => setEnteredOTP(e.target.value)} />
+        <div className=' mt-3 ms-4'>
+
+          <label className='form-label text-white'>
+            Enter OTP:
+            <input type="text" value={enteredOTP} onChange={(e) => setEnteredOTP(e.target.value)} className='form-control w-full'/>
           </label>
-          <button onClick={handleVerifyOTP}>Verify OTP</button>
-          <p>{verificationStatus}</p>
+          <button onClick={handleVerifyOTP} className=" ms-2 p-2 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg">Verify OTP</button><br />
+          <p className='badge text-bg-danger '>{verificationStatus}</p>
         </div>
-      )}
+      )} 
           </div>
 
           <div className="d-flex justify-center mt-4">
