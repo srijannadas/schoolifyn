@@ -6,12 +6,22 @@ import Footer from '../Footer/Footer';
 import HeroImage from '../../assets/images/home pic.png';
 // import { useAuth } from './AuthContext';
 import { jwtDecode } from 'jwt-decode';
+import './Home.css';
 const Home = ({ location }) => {
 
   // if (!token) {
   //   return <div>Please log in to access this page.</div>;
   // }
-
+    const subjects = [
+      "Mathematics",
+      "Science",
+      "History",
+      "English",
+      "Computer Science",
+      "Art",
+      "Music",
+      "Physical Education"
+    ];
   return (
     <div>
       <Header />
@@ -38,6 +48,25 @@ const Home = ({ location }) => {
           </div>
         </div>
       </div>
+
+
+      <div className="container mt-4">
+        <div className="row">
+          <div className="col-md-12">
+          <h2 className="subjects-heading">Subjects</h2>
+            <div className="subject-container">
+              {subjects.map((subject, index) => (
+                <div key={index} className="subject-box">
+                  {subject}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+
       <Footer />
     </div>
   )
