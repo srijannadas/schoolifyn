@@ -7,31 +7,62 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 
 const Login = () => {
-  const [userData, setUserData] = useState({
-    email: '',
-    password: ''
-  })
+  const [email, setEmail] = useState('');
+  const [enteredOTP, setEnteredOTP] = useState('');
   const { setAuthToken } = useAuth();
   const navigate = useNavigate();
+  const[LoginBtn, setLoginBtn] = useState('Request Otp')
 
-
-  const handleAuth = async (e) => {
-    e.preventDefault();
+  const handleRequestLoginOTP = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/login', userData);
+      const response = await axios.post('http://localhost:5000/requestLoginOTP', {email});
 
-      // Store the token in localStorage or a state variable for future requests
-      const token = response.data.token;
-      console.log('Login successful. Token:', token);
-      toast.success('Login successful. Token:', token);
-      setAuthToken(token);
-      navigate('/')
+      console.log(response.data.message);
+      toast.success('OTP Sent Successfully');
+      setLoginBtn('Verify Otp');
     } catch (error) {
-      console.error('Error during login:', error);
-      toast.error('Error during login');
-
+      console.error('Error requesting login OTP:', error.response.data);
     }
-  }
+  };
+  const handleLoginWithOTP = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/loginWithOTP', {
+        email,
+        enteredOTP,
+      });
+      
+      console.log('Login response:', response.data);
+      setAuthToken(response.data.token);
+      toast.success('OTP Verified Successfully');
+      setTimeout(()=> {
+        navigate('/')
+      }, 2000)
+
+      // Further handling of the response, such as storing the token in state or local storage
+    } catch (error) {
+      console.error('Error during login with OTP:', error.response.data);
+      // Handle the error, e.g., display an error message to the user
+    }
+  };
+  // const handleAuth = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post('http://localhost:5000/login', userData);
+
+  //     // Store the token in localStorage or a state variable for future requests
+  //     const token = response.data.token;
+  //     console.log('Login successful. Token:', token);
+  //     toast.success('Login successful. Token:', token);
+  //     setAuthToken(token);
+  //     navigate('/')
+  //   } catch (error) {
+  //     console.error('Error during login:', error.response.data);
+  //     alert(error.response.data.message);
+
+  //   }
+
+
+  // }
   return (
     <div>
       <Toaster position="top-center"
@@ -49,15 +80,20 @@ const Login = () => {
             <div className="container">
               <h1 className=" font-bold text-[#47AE6A] text-3xl ml-4">Let's Start</h1>
 
-              <form action="" className='ml-4 mt-3'>
+            
                 <label htmlFor="" className='form-label text-white'>Email: </label>
-                <input type="email" name="" id="" className='form-control w-full' placeholder='johndoe@schoolify.edu' value={userData.email} onChange={(e) => setUserData({ ...userData, email: e.target.value })} />
+                <input type="email" name="" id="" className='form-control w-full' placeholder='johndoe@schoolify.edu' value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <p className='mt-2 text-white text-right'>Don't have account? <a href="/" className='underline'>Sign Up</a></p>
-                <label htmlFor="" className='form-label text-white'>Password: </label>
-                <input type="password" name="" id="" className='form-control w-full' value={userData.password} onChange={(e) => setUserData({ ...userData, password: e.target.value })} />
-                <p className='mt-2 text-white text-right'> <a href="/" className='underline'>Forgot Password?</a></p>
-                <div className="login-button d-flex justify-center"><button className="p-2 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg" onClick={handleAuth}>Login</button></div>
-              </form>
+                {LoginBtn === 'Verify Otp' ? (
+                    <>
+                     <label htmlFor="" className='form-label text-white'>Enter Otp: </label>
+                <input type="number" name="" id="" className='form-control w-full' value={enteredOTP} onChange={(e) => setEnteredOTP(e.target.value)}/>
+                    </>
+                ) : ''}
+               
+
+                <div className="login-button d-flex justify-center"><button className="p-2 mt-4 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg" onClick={LoginBtn === 'Request Otp' ? handleRequestLoginOTP : handleLoginWithOTP}>{LoginBtn}</button></div>
+          
             </div>
 
             <div className="d-flex justify-center mt-4">

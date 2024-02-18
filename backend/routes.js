@@ -23,14 +23,15 @@ module.exports = (User) => {
       subject: 'OTP Verification',
       text: `Your OTP for registration is: ${otp}`,
     };
+
+  
   
     await transporter.sendMail(mailOptions);
   };
   
   router.post('/register', async (req, res) => {
     try {
-      const { fullName, email, password } = req.body;
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const { fullName, email } = req.body;
   
       // Generate a random 6-digit OTP
       const otp = Math.floor(100000 + Math.random() * 900000);
@@ -38,7 +39,6 @@ module.exports = (User) => {
       const newUser = new User({
         fullName,
         email,
-        password: hashedPassword,
         otp,
       });
   
@@ -83,19 +83,24 @@ module.exports = (User) => {
   router.post('/login', async (req, res) => {
     try {
       const { email, password } = req.body;
-
+  
       const user = await User.findOne({ email });
-
+  
       if (!user) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
-
+  
+      // Check if the user's OTP is verified
+      if (!user.isOTPVerified) {
+        return res.status(401).json({ message: 'OTP not verified. Please complete the OTP verification process.' });
+      }
+  
       const isPasswordValid = await bcrypt.compare(password, user.password);
-
+  
       if (!isPasswordValid) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
-      
+  
       // Generate and send a JSON Web Token (JWT) upon successful login
       const token = jwt.sign({ userId: user._id, userName: user.fullName }, 'your-secret-key'); // Replace 'your-secret-key' with a secret key for signing the token
       res.status(200).json({ token });
@@ -104,6 +109,61 @@ module.exports = (User) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   });
+
+  router.post('/requestLoginOTP', async (req, res) => {
+    try {
+      const { email } = req.body;
+  
+      const user = await User.findOne({ email });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Generate a random 6-digit OTP and store it in the user document
+      const otp = Math.floor(100000 + Math.random() * 900000);
+      user.loginOTP = otp;
+      await user.save();
+  
+      // Send the OTP via email
+      await sendOTPByEmail(user.email, otp);
+  
+      res.status(200).json({ message: 'OTP sent successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  router.post('/loginWithOTP', async (req, res) => {
+    try {
+      const { email, enteredOTP } = req.body;
+  
+      const user = await User.findOne({ email });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Check if the entered OTP matches the stored OTP
+      if (user.loginOTP === parseInt(enteredOTP)) {
+        // Clear the OTP after successful login
+        user.loginOTP = undefined;
+        await user.save();
+  
+        // Generate and send a JSON Web Token (JWT) upon successful login
+        const token = jwt.sign({ userId: user._id, userName: user.fullName }, 'your-secret-key'); // Replace 'your-secret-key' with a secret key for signing the token
+        res.status(200).json({ token });
+      } else {
+        res.status(401).json({ message: 'Invalid OTP' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  
   return router;
 };
 

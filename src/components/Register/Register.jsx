@@ -3,7 +3,7 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import toast, {Toaster} from 'react-hot-toast';
 import Logo from '../../assets/images/logo-main.png'
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
@@ -12,7 +12,6 @@ const Register = () => {
     const [userData, setUserData] = useState({
         fullName: '',
         email: '',
-        password: ''
       })
       const [userId, setUserId] = useState('');
   const [enteredOTP, setEnteredOTP] = useState('');
@@ -25,8 +24,10 @@ const Register = () => {
 
       console.log(response.data.message);
       setUserId(response.data.userId);
+      toast.success('OTP Sent to your Email ID');
     } catch (error) {
       console.error('Error during registration:', error.response.data);
+      toast.error('Something Went Wrong!')
     }
   };
   
@@ -34,11 +35,14 @@ const Register = () => {
   const handleVerifyOTP = async () => {
     try {
       const response = await axios.post('http://localhost:5000/verifyOTP', { userId, enteredOTP });
-      setVerificationStatus(response.data.message);
-      navigate('/login')
+      toast.success(response.data.message)
+      setTimeout(()=> {
+        navigate('/login')
+        
+      },2000)
     } catch (error) {
       console.error('Error verifying OTP:', error.response.data);
-      setVerificationStatus(error.response.data)
+      toast.error(error.response.data)
     }
   };
   return (
@@ -63,8 +67,6 @@ reverseOrder={false}/>
              <input type="text" className='form-control w-full' value={userData.fullName} name='fullName' onChange={(e)=> setUserData({...userData, fullName: e.target.value})}/>
               <label htmlFor="" className='form-label text-white'>Email: </label>
               <input type="email" name="" id="" className='form-control w-full' placeholder='johndoe@schoolify.edu' value={userData.email} onChange={(e)=> setUserData({...userData, email: e.target.value})} />
-              <label htmlFor="" className='form-label text-white'>Password: </label>
-              <input type="password" name="" id="" className='form-control w-full' value={userData.password} onChange={(e)=> setUserData({...userData, password: e.target.value})}/>
               <div className="login-button d-flex justify-center mt-3"><button className="p-2 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg" onClick={handleRegister}>Register</button></div>
             </form>
 
@@ -76,7 +78,6 @@ reverseOrder={false}/>
             <input type="text" value={enteredOTP} onChange={(e) => setEnteredOTP(e.target.value)} className='form-control w-full'/>
           </label>
           <button onClick={handleVerifyOTP} className=" ms-2 p-2 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg">Verify OTP</button><br />
-          <p className='badge text-bg-danger '>{verificationStatus}</p>
         </div>
       )} 
           </div>
@@ -93,6 +94,7 @@ reverseOrder={false}/>
             <button className='p-2 rounded bg-[#D9D9D9] me-2'><FaFacebook /></button>
             <button className='p-2 rounded bg-[#D9D9D9]'><FaGoogle /></button>
           </div>
+          <Link to={'/'}><p className='text-center text-white underline mt-3'>Go To Home Page</p></Link>
           </div>
         </div>
       </div>

@@ -10,10 +10,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
   isOTPVerified: {
     type: Boolean,
     default: false,
@@ -23,6 +19,9 @@ const userSchema = new mongoose.Schema({
   },
   otpExpiration: {
     type: Date,
+  },
+  loginOTP: {
+    type: Number, // Assuming OTP is a 6-digit number
   },
 });
 
