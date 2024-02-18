@@ -1,0 +1,21 @@
+.subjects-heading {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+  
+  .subject-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Adjust the number of columns as needed */
+    grid-gap: 10px;
+  }
+  
+  .subject-box {
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
