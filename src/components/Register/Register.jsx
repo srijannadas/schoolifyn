@@ -4,9 +4,11 @@ import toast, {Toaster} from 'react-hot-toast';
 import Logo from '../../assets/images/logo-main.png'
 import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 
 
 const Register = () => {
+  const {setAuthToken} = useAuth();
 
   const navigate = useNavigate();
     const [userData, setUserData] = useState({
@@ -24,6 +26,8 @@ const Register = () => {
 
       console.log(response.data.message);
       setUserId(response.data.userId);
+      setAuthToken(response.data.token)
+
       toast.success('OTP Sent to your Email ID');
     } catch (error) {
       console.error('Error during registration:', error.response.data);
@@ -37,7 +41,7 @@ const Register = () => {
       const response = await axios.post('http://localhost:5000/verifyOTP', { userId, enteredOTP });
       toast.success(response.data.message)
       setTimeout(()=> {
-        navigate('/login')
+        navigate('/')
         
       },2000)
     } catch (error) {

@@ -20,8 +20,72 @@ module.exports = (User) => {
     const mailOptions = {
       from: 'krupesh123vithlani@gmail.com',
       to: email,
-      subject: 'OTP Verification',
-      text: `Your OTP for registration is: ${otp}`,
+      subject: 'Schoolify Registration OTP',
+      html: `
+      <html>
+      <head>
+      <meta name="description" content="Your preview text goes here"/>
+      </head>
+      <body>
+      <div style="font-family: Helvetica,Arial,sans-serif;min-width:100px;overflow:hidden;line-height:2">
+      <div style="margin:50px auto;width:70%;padding:20px 0">
+        <div style="border-bottom:1px solid #eee">
+          <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600"><img src="https://res.cloudinary.com/dhex06aa8/image/upload/v1708277594/schoolify/b2lfoebgjaeet71ga8jm.png" width="30px" height="30px"/> Schoolify</a>
+        </div>
+        <p style="font-size:1.1em">Hi,</p>
+        <p>Thank you for choosing Schoolify. Use the following OTP to complete your Registration procedures. OTP is valid for 5 minutes</p>
+        <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
+        <p style="font-size:0.9em;">Regards,<br />Schoolify</p>
+        <hr style="border:none;border-top:1px solid #eee" />
+        <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+          <p>Schoolify Inc</p>
+        </div>
+      </div>
+    </div>
+    </body>
+  `,
+    };
+
+  
+  
+    await transporter.sendMail(mailOptions);
+  };
+  const sendLoginOTPByEmail = async (email, otp) => {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'krupesh123vithlani@gmail.com', // Your Gmail email address
+        pass: 'ysqwtrissjpakjwf', // Your Gmail email password (use App Password if 2-factor authentication is enabled)
+      },
+    });
+  
+    const mailOptions = {
+      from: 'krupesh123vithlani@gmail.com',
+      to: email,
+      subject: 'Schoolify Login OTP',
+      html: `
+      <html>
+      <head>
+      <meta name="description" content="Your preview text goes here"/>
+      </head>
+      <body>
+      <div style="font-family: Helvetica,Arial,sans-serif;min-width:100px;overflow:hidden;line-height:2">
+      <div style="margin:50px auto;width:70%;padding:20px 0">
+        <div style="border-bottom:1px solid #eee">
+          <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600"><img src="https://res.cloudinary.com/dhex06aa8/image/upload/v1708277594/schoolify/b2lfoebgjaeet71ga8jm.png" width="30px" height="30px"/> Schoolify</a>
+        </div>
+        <p style="font-size:1.1em">Hi,</p>
+        <p>Thank you for choosing Schoolify. Use the following OTP to complete your Login procedures. OTP is valid for 5 minutes</p>
+        <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
+        <p style="font-size:0.9em;">Regards,<br />Schoolify</p>
+        <hr style="border:none;border-top:1px solid #eee" />
+        <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+          <p>Schoolify Inc</p>
+        </div>
+      </div>
+    </div>
+    </body>
+  `,
     };
 
   
@@ -46,8 +110,10 @@ module.exports = (User) => {
   
       // Send OTP to the user via email
       await sendOTPByEmail(newUser.email, otp);
+       // Generate a JSON Web Token (JWT) for the newly registered user
+    const token = jwt.sign({ userId: newUser._id, userName: newUser.fullName }, 'your-secret-key');
   
-      res.status(201).json({ message: 'User registered successfully', userId: newUser._id });
+      res.status(201).json({ message: 'User registered successfully', userId: newUser._id, token });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
@@ -126,7 +192,7 @@ module.exports = (User) => {
       await user.save();
   
       // Send the OTP via email
-      await sendOTPByEmail(user.email, otp);
+      await sendLoginOTPByEmail(user.email, otp);
   
       res.status(200).json({ message: 'OTP sent successfully' });
     } catch (error) {
