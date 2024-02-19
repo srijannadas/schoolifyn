@@ -1,0 +1,30 @@
+{
+    "cards": [
+      {
+        "backgroundColor": "#5400FF",
+        "textColor": "#fff",
+        "title": "NCERT",
+        "subtitle": "THIS IS NCERT"
+      },
+      {
+        "backgroundColor": "#00FFC6",
+        "textColor": "#fff",
+        "title": "NCERT",
+        "subtitle": "THIS IS NCERT"
+      },
+      {
+        "backgroundColor": "#0090FF",
+        "textColor": "#fff",
+        "title": "NCERT",
+        "subtitle": "THIS IS NCERT"
+      },
+      
+      {
+        "backgroundColor": "#0090FF",
+        "textColor": "#fff",
+        "title": "Hello",
+        "subtitle": "THIS IS Hello"
+      }
+    ]
+  }
+  
