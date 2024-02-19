@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const UserFind = require('./models/User');
+const speakeasy = require('speakeasy');
+const { authenticator } = require('otplib');
 
 module.exports = (User) => {
 
@@ -107,6 +109,10 @@ module.exports = (User) => {
       });
   
       await newUser.save();
+      // Generate 2FA secret key
+    const secret = speakeasy.generateSecret({ length: 20 });
+    newUser.twoFactorSecret = secret.base32;
+    await newUser.save();
   
       // Send OTP to the user via email
       await sendOTPByEmail(newUser.email, otp);
@@ -219,10 +225,126 @@ module.exports = (User) => {
   
         // Generate and send a JSON Web Token (JWT) upon successful login
         const token = jwt.sign({ userId: user._id, userName: user.fullName }, 'your-secret-key'); // Replace 'your-secret-key' with a secret key for signing the token
-        res.status(200).json({ token });
+        const userID = user._id;
+        res.status(200).json({ token, userID});
       } else {
         res.status(401).json({ message: 'Invalid OTP' });
       }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  router.post('/login2FA', async (req, res) => {
+    try {
+      const { email, otp } = req.body;
+  
+      // Find the user by email
+      const user = await User.findOne({ email });
+  
+      if (!user) {
+        return res.status(401).json({ message: 'Invalid email or OTP' });
+      }
+  
+      // Check if the provided OTP matches the user's stored OTP
+      if (user.otp !== otp) {
+        return res.status(401).json({ message: 'Invalid email or OTP' });
+      }
+  
+      // Check if 2FA is enabled for the user
+      if (user.twoFactorSecret) {
+        // If 2FA is enabled, verify the TOTP code
+        const is2FAValid = speakeasy.totp.verify({
+          secret: user.twoFactorSecret,
+          encoding: 'base32',
+          token: otp,
+        });
+  
+        if (!is2FAValid) {
+          return res.status(401).json({ message: 'Invalid email, OTP, or 2FA code' });
+        }
+      }
+  
+      // Check any other conditions before proceeding with login, if needed
+      // ...
+  
+      // Generate and send a JSON Web Token (JWT) upon successful login
+      const token = jwt.sign({ userId: user._id, email: user.email }, 'your-secret-key');
+      res.status(200).json({ token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  router.post('/profile/enable-2fa', async (req, res) => {
+    try {
+      const { userId, enable2FA } = req.body;
+  
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      if (enable2FA) {
+        // Enable 2FA: Generate secret and return it to the client
+        const secret = speakeasy.generateSecret({ length: 20 });
+        user.twoFactorSecret = secret.base32;
+        await user.save();
+  
+        res.status(200).json({ secret: secret.otpauth_url });
+      } else {
+        // Disable 2FA
+        user.twoFactorSecret = undefined;
+        await user.save();
+  
+        res.status(200).json({ message: '2FA disabled successfully' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+  
+  // Route to check if 2FA is enabled for a user
+  router.get('/profile/is-2fa-enabled/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+  
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.status(200).json({ is2FAEnabled: !!user.twoFactorSecret });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+  
+  // Route to generate a new OTP for 2FA
+  router.post('/profile/generate-otp', async (req, res) => {
+    try {
+      const { userId } = req.body;
+  
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      if (!user.twoFactorSecret) {
+        return res.status(400).json({ message: '2FA is not enabled for this user' });
+      }
+  
+      // Generate a new OTP
+      const otp = authenticator.generate(user.twoFactorSecret);
+  
+      res.status(200).json({ otp });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });

@@ -8,6 +8,8 @@ import HomeSecure from './components/Home/HomeSecure';
 import Register from './components/Register/Register';
 import VerificationPage from './components/Register/VerificationPage';
 import PasswordlessOTPLoginForm from './components/Login/PasswordLessOTPLogin';
+import Login2FA from './components/Login/Login2FA';
+import ProfilePage from './components/Profile/Profile';
 
 function App() {
   // const isLogin = useAuth();
@@ -21,7 +23,8 @@ function App() {
           <Route path='/register' element={<Register/>}/>
           <Route path='/verify/:token' element={<VerificationPage/>}/>
           <Route path='/OTPLogin/' element={<PasswordlessOTPLoginForm/>}/>
-
+          <Route path='/Login2FA/' element={<Login2FA/>}/>
+          <Route path='/profile/' element={<ProfilePage/>}/>
         </Routes>
       </BrowserRouter>
       </AuthProvider>

@@ -5,45 +5,29 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
-import Cookies from 'js-cookie';
 
-const Login = () => {
+const Login2FA = () => {
   const [email, setEmail] = useState('');
   const [enteredOTP, setEnteredOTP] = useState('');
   const { setAuthToken } = useAuth();
   const navigate = useNavigate();
   const[LoginBtn, setLoginBtn] = useState('Request Otp')
+  const [otp, setOTP] = useState('');
 
-  const handleRequestLoginOTP = async () => {
+  const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/requestLoginOTP', {email});
-
-      console.log(response.data.message);
-      toast.success('OTP Sent Successfully');
-      setLoginBtn('Verify Otp');
-    } catch (error) {
-      console.error('Error requesting login OTP:', error.response.data);
-    }
-  };
-  const handleLoginWithOTP = async () => {
-    try {
-      const response = await axios.post('http://localhost:5000/loginWithOTP', {
+      const response = await axios.post('http://localhost:5000/login2FA', {
         email,
-        enteredOTP,
+        otp,
       });
-      
-      console.log('Login response:', response.data);
-      setAuthToken(response.data.token);
-      Cookies.set('userID', response.data.userID)
-      toast.success('OTP Verified Successfully');
-      setTimeout(()=> {
-        navigate('/')
-      }, 2000)
 
-      // Further handling of the response, such as storing the token in state or local storage
+      console.log(response.data);
+      setAuthToken(response.data.token);
+      
+      // Handle successful login, e.g., store token in state or local storage
     } catch (error) {
-      console.error('Error during login with OTP:', error.response.data);
-      // Handle the error, e.g., display an error message to the user
+      console.error('Login error:', error.response.data);
+      // Handle login error, e.g., display error message to the user
     }
   };
   // const handleAuth = async (e) => {
@@ -86,15 +70,14 @@ const Login = () => {
                 <label htmlFor="" className='form-label text-white'>Email: </label>
                 <input type="email" name="" id="" className='form-control w-full' placeholder='johndoe@schoolify.edu' value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <p className='mt-2 text-white text-right'>Don't have account? <a href="/" className='underline'>Sign Up</a></p>
-                {LoginBtn === 'Verify Otp' ? (
+               
                     <>
                      <label htmlFor="" className='form-label text-white'>Enter Otp: </label>
-                <input type="number" name="" id="" className='form-control w-full' value={enteredOTP} onChange={(e) => setEnteredOTP(e.target.value)}/>
+                <input type="number" name="" id="" className='form-control w-full' value={otp} onChange={(e) => setOTP(e.target.value)}/>
                     </>
-                ) : ''}
-               
+             
 
-                <div className="login-button d-flex justify-center"><button className="p-2 mt-4 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg" onClick={LoginBtn === 'Request Otp' ? handleRequestLoginOTP : handleLoginWithOTP}>{LoginBtn}</button></div>
+                <div className="login-button d-flex justify-center"><button className="p-2 mt-4 bg-[#D9D9D9] rounded w-[100px] font-bold drop-shadow-lg" onClick={handleLogin}>Login</button></div>
           
             </div>
 
@@ -120,4 +103,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login2FA

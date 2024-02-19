@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema({
   loginOTP: {
     type: Number, // Assuming OTP is a 6-digit number
   },
+  twoFactorSecret: {
+    type: String,
+  },
 });
 
 const User = mongoose.model('User', userSchema);

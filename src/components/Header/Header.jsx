@@ -58,7 +58,7 @@ const Header = () => {
               <div className="profile-dropdown" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <ul>
                       <li>
-                        <Link to="#">Profile</Link>
+                        <Link to="/profile">Profile</Link>
                         
                       </li>
                       
