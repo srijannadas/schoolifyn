@@ -6,8 +6,7 @@ import Footer from '../Footer/Footer';
 import HeroImage from '../../assets/images/home pic.png';
 // import { useAuth } from './AuthContext';
 import { jwtDecode } from 'jwt-decode';
-import cardInfo from './CardInfo.json'
-import NotesImg from '../../assets/images/notes.jpeg'
+import Studymaterial from './Studymaterial';
 import './Home.css';
 const Home = ({ location }) => {
 
@@ -25,19 +24,6 @@ const Home = ({ location }) => {
     "Physical Education"
   ];
 
-  const renderCards = () => {
-    return cardInfo.cards.map((card, index) => (
-      <div key={index} className="col-md-3 mb-4">
-      <div className={`card`} style={{backgroundColor: card.backgroundColor, color: card.textColor}}>
-        <div className="card-body">
-          <h5 className="card-title">{card.title} {index + 1}</h5>
-          <p className="card-text">{card.subtitle}</p>
-          <img src={NotesImg} alt="" className="card-img-top img-fluid"/>
-        </div>
-      </div>
-      </div>
-    ));
-  };
 
   return (
     <div>
@@ -84,23 +70,8 @@ const Home = ({ location }) => {
 
       {/*  explore now ---- yaha ncrt and baki chiz add hoga */}
 
-      <div className="container mt-4">
-        <div className="row">
-          <div className="col-md-12">
-            <h2 className="material-heading">Study Materials</h2>
-            <div className="row">
-            
-               
-                    
-                    {renderCards()}
-               
-                </div>
-              </div>
-            </div>
-          </div>
-        
-
-
+     
+      <Studymaterial/>
       <Footer />
     </div>
   )
