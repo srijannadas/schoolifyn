@@ -10,6 +10,8 @@ import VerificationPage from './components/Register/VerificationPage';
 import PasswordlessOTPLoginForm from './components/Login/PasswordLessOTPLogin';
 import Login2FA from './components/Login/Login2FA';
 import ProfilePage from './components/Profile/Profile';
+import AdminHome from './components/AdminPanel/Home';
+import CompleteProfile from './components/Profile/CompleteProfile'
 
 function App() {
   // const isLogin = useAuth();
@@ -25,6 +27,9 @@ function App() {
           <Route path='/OTPLogin/' element={<PasswordlessOTPLoginForm/>}/>
           <Route path='/Login2FA/' element={<Login2FA/>}/>
           <Route path='/profile/' element={<ProfilePage/>}/>
+          <Route path='/profile/complete' element={<CompleteProfile/>}/>
+
+          <Route path="/admin" element={<AdminHome/>}/>
         </Routes>
       </BrowserRouter>
       </AuthProvider>
