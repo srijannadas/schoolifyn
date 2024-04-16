@@ -10,7 +10,30 @@ const Notes = () => {
     <Header/>
     <div>
         <h1 class="text-5xl mt-2 text-center ">NOTES</h1>
-        
+        <div className="flex justify-center mt-4">
+          {/* First Dropdown */}
+          <select className="mx-2 px-4 py-2 border rounded">
+            <option value="">Select Year</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            {/* Add more options as needed */}
+          </select>
+          {/* Second Dropdown */}
+          <select className="mx-2 px-4 py-2 border rounded">
+            <option value="">Select Subject</option>
+            <option value="math">Math</option>
+            <option value="science">Science</option>
+            {/* Add more options as needed */}
+          </select>
+          {/* Third Dropdown */}
+          <select className="mx-2 px-4 py-2 border rounded">
+            <option value="">Select Exam</option>
+            <option value="SAT">SAT</option>
+            <option value="ACT">ACT</option>
+            {/* Add more options as needed */}
+          </select>
+        </div>
     </div>
 <div class="mx-auto container py-20 px-6">
             <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

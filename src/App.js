@@ -13,6 +13,7 @@ import ProfilePage from './components/Profile/Profile';
 import AdminHome from './components/AdminPanel/Home';
 import CompleteProfile from './components/Profile/CompleteProfile'
 import Notes from './components/Notes/Notes';
+import PYQ from './components/PYQ/PYQ';
 
 function App() {
   // const isLogin = useAuth();
@@ -30,6 +31,7 @@ function App() {
           <Route path='/profile/' element={<ProfilePage/>}/>
           <Route path='/profile/complete' element={<CompleteProfile/>}/>
           <Route path='/Notes' element={<Notes/>}/>
+          <Route path='/PYQ' element={<PYQ/>}/>
           <Route path="/admin" element={<AdminHome/>}/>
         </Routes>
       </BrowserRouter>
