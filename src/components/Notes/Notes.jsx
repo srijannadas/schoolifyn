@@ -17,6 +17,14 @@ const Notes = () => {
             <option value="2023">2023</option>
             <option value="2022">2022</option>
             <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+            <option value="2018">2018</option>
+            <option value="2017">2017</option>
+            <option value="2016">2016</option>
+            <option value="2015">2015</option>
+            <option value="2014">2014</option>
+            <option value="2013">2013</option>
             {/* Add more options as needed */}
           </select>
           {/* Second Dropdown */}
@@ -24,13 +32,17 @@ const Notes = () => {
             <option value="">Select Subject</option>
             <option value="math">Math</option>
             <option value="science">Science</option>
+            <option value="english">English</option>
+            <option value="SST">SST</option>
+            <option value="computer">Computer and IT</option>
             {/* Add more options as needed */}
           </select>
           {/* Third Dropdown */}
           <select className="mx-2 px-4 py-2 border rounded">
             <option value="">Select Exam</option>
-            <option value="SAT">SAT</option>
-            <option value="ACT">ACT</option>
+            <option value="ICSE">ICSE</option>
+            <option value="CBSC">CBSC</option>
+            <option value="STATE">STATE</option>
             {/* Add more options as needed */}
           </select>
         </div>
